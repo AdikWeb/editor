@@ -1,0 +1,17 @@
+body, html{
+    padding: 0;
+    margin: 0;
+}
+
+#canvasContainer{
+    padding: 50px;
+}
+
+canvas{
+    display: block;
+    max-width: 1700px;
+    width: 100%;
+    height: 660px;
+    box-shadow: 0 5px 10px -4px rgba(0, 0, 0, 0.466);
+    margin: 0 auto;
+}
