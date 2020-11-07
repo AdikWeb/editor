@@ -5,6 +5,21 @@
   <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-<div id="canvasContainer"></div>
+  <div class="svgEditor">
+    <div id="canvasContainer"></div>
+    <div class="svgEditor__tools">
+      <button svg-tools="createPolygon">Create polygon</button>
+      <button svg-tools="resetWidth">Reset Width</button>
+      <hr>
+      <input svg-input="text1" type="text" name="text" id="text1">
+      <input svg-input="widthcanvas" type="number" name="text" id="widthcanvas">
+      <input svg-input="heightcanvas" type="number" name="text" id="heightcanvas">
+      <button svg-tools="saveLayer">Save Layer</button>
+      <div id="info">
+        
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
