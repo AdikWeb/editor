@@ -39,16 +39,17 @@ export default class Canvasina {
         this.update();
     }
 
-
     drawBackground() {
         return new Promise((resolve, reject) => {
             loadImage(this.layersData.background).then(img => {
-                let { w, h, nw, nh, cx, cy, iw, ih } = drawImageProp(this.ctx, img);
-                this.posSizer = new PosSizer(false, nw, nh)
+                let { w, h, nw, nh, cx, cy } = drawImageProp(this.ctx, img);
+                this.posSizer = new PosSizer(img, nw, nh, cx, cy, false, false);
 
                 this.ctx.beginPath();
-
-                this.ctx.rect(...this.posSizer.coord(50, 50, true), ...this.posSizer.size(10, 10));
+                this.ctx.moveTo(...this.posSizer.coord(200, 200));
+                this.ctx.lineTo(...this.posSizer.coord(500, 200));
+                this.ctx.lineTo(...this.posSizer.coord(500, 500));
+                this.ctx.lineTo(...this.posSizer.coord(200, 500));
 
                 this.ctx.strokeStyle = 'red'
                 this.ctx.fill();
@@ -57,10 +58,9 @@ export default class Canvasina {
                
                 document.getElementById('info').innerHTML = `
                     <div> <b>img:</b> ${img.width} | ${img.height}</div>
-                    <div> <b>x:</b>   ${cx} | <b>y:</b> ${cy}</div>
+                    <div> <b>cx:</b>   ${cx} | <b>cy:</b> ${cy}</div>
                     <div> <b>h:</b>  ${h}  | <b>w:</b>  ${w}</div>
                     <div> <b>nh:</b> ${nh} | <b>nw:</b> ${nw}</div>
-                    <div> ${this.posSizer.coord(50, 50, true)} </div>
                  `;
 
                 resolve(img)
@@ -71,23 +71,23 @@ export default class Canvasina {
     draw() {
         this.drawBackground().then(() => {
 
-            this.drawTmp();
+            // this.drawTmp();
             // this.ctx.beginPath();
             // let test1 = this.posSizer.size(10, 10);
             // this.ctx.rect(...this.posSizer.coord(60, 60, true), ...test1);
             // this.ctx.fill();
-            /*            this.ctx.beginPath();
-                       let test = this.posSizer.coord(50, 50, false);
-                       let test1 = this.posSizer.size(10, 10);
-                       let test2 = this.posSizer.pxToPercent(10, 10)
-                       this.ctx.rect(...this.posSizer.coord(50, 50, true), ...test1);
+            //             this.ctx.beginPath();
+            //            let test = this.posSizer.coord(50, 50, false);
+            //            let test1 = this.posSizer.size(10, 10);
+            //            let test2 = this.posSizer.pxToPercent(10, 10)
+            //            this.ctx.rect(...this.posSizer.coord(50, 50, true), ...test1);
            
-                       this.ctx.moveTo(...this.posSizer.coord(10, 10, true))
-                       this.ctx.lineTo(...this.posSizer.coord(30, 10, true))
-                       this.ctx.lineTo(...this.posSizer.coord(30, 30, true))
-                       this.ctx.lineTo(...this.posSizer.coord(10, 30, true))
+            //            this.ctx.moveTo(...this.posSizer.coord(10, 10, true))
+            //            this.ctx.lineTo(...this.posSizer.coord(30, 10, true))
+            //            this.ctx.lineTo(...this.posSizer.coord(30, 30, true))
+            //            this.ctx.lineTo(...this.posSizer.coord(10, 30, true))
            
-                       this.ctx.fill(); */
+            //            this.ctx.fill();
         })
     }
 
