@@ -19,8 +19,8 @@ export default class PosSizer {
         }
     }
 
-    coord(pX, pY) {
-        return this.isObj ? { x: this.calcCoord(pX, this.pWidth, this.w, this.dx, this.pMode), y: this.calcCoord(pY, this.pHeight, this.h, this.dy, this.pMode) }
-                  : [this.calcCoord(pX, this.pWidth, this.w, this.dx, this.pMode), this.calcCoord(pY, this.pHeight, this.h, this.dy, this.pMode)]; 
+    coord(pX, pY, percent = false) {
+        return this.isObj ? { x: this.calcCoord(pX, this.pWidth, this.w, this.dx, percent||this.pMode), y: this.calcCoord(pY, this.pHeight, this.h, this.dy, percent||this.pMode) }
+                  : [this.calcCoord(pX, this.pWidth, this.w, this.dx, percent||this.pMode), this.calcCoord(pY, this.pHeight, this.h, this.dy, percent||this.pMode)]; 
     }
 }

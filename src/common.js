@@ -1,11 +1,15 @@
-
+let loadImageSrc = null;
 export function loadImage(src) {
     return new Promise((resolve, reject)=>{
-        const img = new Image();
-        img.src = src;
-        if(img.complete)resolve(img)
-        img.onload = ()=> resolve(img)
-        img.onerror = ()=> reject(img)
+        if(!loadImageSrc){
+            const img = loadImageSrc = new Image();
+            img.src = src;
+            if(img.complete)resolve(img)
+            img.onload = ()=> resolve(img)
+            img.onerror = ()=> reject(img)
+        }else{
+            if(loadImageSrc.complete)resolve(loadImageSrc)
+        }
     });
 }
 

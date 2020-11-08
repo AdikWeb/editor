@@ -27,7 +27,7 @@ export default class Canvasina {
         this.cnv.height = this.cnvContainer.offsetHeight
 
         this.cnv.id = 'canvas_' + Date.now();
-        this.CanvasDraw = new CanvasDraw(this.ctx);
+        
 
         CEvent.add('resize', window, () => {
             if (this.cnvConfig.setParentWidth) {
@@ -43,16 +43,9 @@ export default class Canvasina {
         return new Promise((resolve, reject) => {
             loadImage(this.layersData.background).then(img => {
                 let { w, h, nw, nh, cx, cy } = drawImageProp(this.ctx, img);
+                
                 this.posSizer = new PosSizer(img, nw, nh, cx, cy, false, false);
-
-                this.ctx.beginPath();
-                this.ctx.moveTo(...this.posSizer.coord(200, 200));
-                this.ctx.lineTo(...this.posSizer.coord(500, 200));
-                this.ctx.lineTo(...this.posSizer.coord(500, 500));
-                this.ctx.lineTo(...this.posSizer.coord(200, 500));
-
-                this.ctx.strokeStyle = 'red'
-                this.ctx.fill();
+                this.CanvasDraw = new CanvasDraw(this.ctx, this.posSizer, this.layersData);
 
                 console.log(` ${img.width}|${img.height} \n x:${cx} \n y:${cy} \n h:${h} | w:${w} \n nh:${nh} | nw:${nw} \n ${w / 100}`)
                
@@ -61,6 +54,7 @@ export default class Canvasina {
                     <div> <b>cx:</b>   ${cx} | <b>cy:</b> ${cy}</div>
                     <div> <b>h:</b>  ${h}  | <b>w:</b>  ${w}</div>
                     <div> <b>nh:</b> ${nh} | <b>nw:</b> ${nw}</div>
+                    <div> <b>nh:</b>${this.posSizer.coord(10,10, true)}</div>
                  `;
 
                 resolve(img)
@@ -70,39 +64,28 @@ export default class Canvasina {
 
     draw() {
         this.drawBackground().then(() => {
-
-            // this.drawTmp();
-            // this.ctx.beginPath();
-            // let test1 = this.posSizer.size(10, 10);
-            // this.ctx.rect(...this.posSizer.coord(60, 60, true), ...test1);
-            // this.ctx.fill();
-            //             this.ctx.beginPath();
-            //            let test = this.posSizer.coord(50, 50, false);
-            //            let test1 = this.posSizer.size(10, 10);
-            //            let test2 = this.posSizer.pxToPercent(10, 10)
-            //            this.ctx.rect(...this.posSizer.coord(50, 50, true), ...test1);
-           
-            //            this.ctx.moveTo(...this.posSizer.coord(10, 10, true))
-            //            this.ctx.lineTo(...this.posSizer.coord(30, 10, true))
-            //            this.ctx.lineTo(...this.posSizer.coord(30, 30, true))
-            //            this.ctx.lineTo(...this.posSizer.coord(10, 30, true))
-           
-            //            this.ctx.fill();
+            this.drawLayers();
+            this.drawTmp();
         })
     }
-
+    drawLayers(){
+        for(let layer of this.layersData.layers){
+            this.CanvasDraw.drawPath(layer);
+            this.CanvasDraw.drawDots(layer);        
+        }
+    }
     drawTmp() {
-
-
-
+        this.CanvasDraw.drawPath(this.tmpLayerData);
+        if(this.tmpLayerData.dotsVisible)
+            this.CanvasDraw.drawDots(this.tmpLayerData);
     }
 
     update() {
+        this.cnv.width |= 0;
         if (this.cnvConfig.setParentWidth) {
             this.cnv.width = this.cnvContainer.offsetWidth
             this.cnv.height = this.cnvContainer.offsetHeight
         }
-        this.cnv.width |= 0;
         this.draw()
         requestAnimationFrame(this.update.bind(this))
     }
